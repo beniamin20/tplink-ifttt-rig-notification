@@ -5,17 +5,6 @@ This node.js monitors the power usage of a TP-Link HS110 smart plug to determine
 ![TP-Link HS110 Smart Plug](https://cloud.githubusercontent.com/assets/4665046/18059321/7974aba2-6de6-11e6-8acf-46f04b2fa43c.jpg)
 ![IFTTT Notification](https://cloud.githubusercontent.com/assets/4665046/18059320/7974923e-6de6-11e6-9271-22c954b55671.JPG)
 
-## Example
-```js
-var SmartPlugPowerMonitor = require("smart-plug-power-monitor");
-
-var smartPlugPowerMonitor = new SmartPlugPowerMonitor({
-  smartPlugIP: "192.168.1.5",
-  iftttMakerChannelKey: "yourIftttMakerKey"
-});
-
-smartPlugPowerMonitor.start();
-```
 ## Installing
 ```
 npm install iftttmaker 
