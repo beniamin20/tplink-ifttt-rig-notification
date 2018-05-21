@@ -1,19 +1,16 @@
-// npm install iftttmaker               - https://github.com/kolarcz/node-iftttmaker
-// npm install --save tplink-cloud-api  - https://github.com/adumont/tplink-cloud-api
-
 // IFTTT Data
-const apiKey = '<IFTTTMaker apiKey>';
-const event  =  '<IFTTTMaker event>';
+const apiKey = '<IFTTTMaker Key>';
+const event  =  '<IFTTTMaker Event>';
 
 // TPLink Data
-const tpLinkAccount = '<TPLink account>';                    // Kasa account
-const tpLinkAccountPassword = '<TPLink password>';           // Kasa password
-const tpLinkDeviceId = '<UUID4 deviceId>';                   // A generated UUID4
-const tpLinkPlugDeviceName = '<TPLink Device Name>';         // Smart plug name
+const tpLinkAccount = '<tpLinkAccount>';                    // Kasa account
+const tpLinkAccountPassword = '<tpLinkAccountPassword>';           // Kasa password
+const tpLinkDeviceId = '<UUID4>';                   // A generated UUID4
+const tpLinkPlugDeviceName = "<tpLinkPlugDeviceName>";         // Smart plug name
 
 // Miner Data
-const timeInterval = 30000;     // time interval for power usage check in ms 
-const powerValue = 600;         // minimum power consumption in W
+const timeInterval = 3000;     // time interval for power usage check in ms 
+const powerValue = 1200;         // minimum power consumption in W
 
 // =====================================================================================
 
@@ -53,12 +50,14 @@ async function poolData() {
 
 async function checkConsumption() {
     var energyData = await myTPLink.getHS110(tpLinkPlugDeviceName).getPowerUsage();
-    var consumption = energyData.power_mw / 1000
-    console.log(consumption);
+    var consumption = energyData.power
+    var time = getDateTime();
+
+    console.log( parseInt(consumption) , time);
 
     if ( consumption < powerValue ) {
       sendNotification();
-    } 
+    }
 }
 
 async function sendNotification() {
@@ -69,6 +68,33 @@ async function sendNotification() {
   console.log('> The request could not be sent:', error);
 
 });
+}
+
+function getDateTime() {
+    var now     = new Date();
+    var year    = now.getFullYear();
+    var month   = now.getMonth()+1;
+    var day     = now.getDate();
+    var hour    = now.getHours();
+    var minute  = now.getMinutes();
+    var second  = now.getSeconds();
+    if(month.toString().length == 1) {
+        var month = '0'+month;
+    }
+    if(day.toString().length == 1) {
+        var day = '0'+day;
+    }
+    if(hour.toString().length == 1) {
+        var hour = '0'+hour;
+    }
+    if(minute.toString().length == 1) {
+        var minute = '0'+minute;
+    }
+    if(second.toString().length == 1) {
+        var second = '0'+second;
+    }
+    var dateTime = year+'/'+month+'/'+day+' '+hour+':'+minute+':'+second;
+     return dateTime;
 }
 
 start();
